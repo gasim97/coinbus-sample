@@ -1,0 +1,46 @@
+enum str BookSide ->
+    ASKS = asks
+    BIDS = bids
+
+
+msg DepthUpdate ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    list[float] bid_prices = []
+    list[float] bid_volumes = []
+    list[float] ask_prices = []
+    list[float] ask_volumes = []
+    bool is_final_chunk
+
+
+msg SubscribeDepthUpdate : core:msg.Request ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+
+
+msg ClearDepthUpdate ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+
+
+msg Trade ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    int id = 0
+    str price_str = "0"
+    float price = 0
+    str quantity_str = "0"
+    float quantity = 0
+    int time = core:constant INVALID_TIMESTAMP
+    bool is_buyer_maker
+    bool is_best_match
+
+
+msg SubscribeTrade : core:msg.Request ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+
+
+msg TestMarketDataConsumerConfig ->
+    common:enum.Venue venue = Venue.INVALID
+    list[common:enum.Symbol] symbols = []

@@ -1,0 +1,37 @@
+"""
+Generated code
+"""
+
+from __future__ import annotations
+
+{{ MsgTemplateHelper.render_typing_imports(msg, False) }}
+
+from core.msg.base.msg import Msg
+from core.msg.base.msggroup import MsgGroup
+from core.msg.base.msgtype import MsgType
+{{ MsgTemplateHelper.render_type_ref_imports(msg) }}
+
+
+class {{ msg.msg_name }}Msg({{ msg.parent_msg_type }}):
+
+    __slots__ = ()
+
+    @override
+    @property
+    def group(self) -> MsgGroup:
+        return MsgGroup.{{ msg.group.upper() }}
+
+    @override
+    @property
+    def type(self) -> MsgType:
+        return {{ msg.group_types_class_name }}.{{ msg.msg_name.upper() }}
+
+    @override
+    @property
+    def groups(self) -> list[MsgGroup]:
+        return [MsgGroup.{{ msg.group.upper() }}, *super().groups]
+
+    @override
+    @property
+    def types(self) -> list[MsgType]:
+        return [{{ msg.group_types_class_name }}.{{ msg.msg_name.upper() }}, *super().types]

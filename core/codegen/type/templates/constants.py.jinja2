@@ -1,0 +1,8 @@
+"""
+Generated code
+"""
+{{ typing_imports }}
+{{ ref_imports }}
+{%- for constant in constants %}
+{{ constant.name }}: {{ constant.type_hint }} = {{ constant.default_value_expr }}
+{%- endfor %}

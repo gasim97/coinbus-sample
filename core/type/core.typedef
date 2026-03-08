@@ -1,0 +1,43 @@
+constant str INVALID_REQUEST_ID = "INVALID"
+
+
+constant int INVALID_TIMESTAMP = -1
+
+
+constant int INVALID_PRICE_INT = -1
+constant float INVALID_PRICE_FLOAT = -1.0
+constant WFloat INVALID_PRICE_WFLOAT = WFloat(value=-1, precision=0)
+
+
+constant int INVALID_QUANTITY_INT = -1
+constant float INVALID_QUANTITY_FLOAT = -1.0
+constant WFloat INVALID_QUANTITY_WFLOAT = WFloat(value=-1, precision=0)
+
+
+enum str Environment ->
+    PROD = Prod
+    TEST = Test
+
+
+msg Activate ->
+    str node_name
+
+
+msg Deactivate ->
+    str node_name
+
+
+msg SessionEnded
+
+
+msg Configuration ->
+    str node_name
+    base:msg.Msg msg
+
+
+msg Request ->
+    str request_id = constant INVALID_REQUEST_ID
+
+
+msg Response ->
+    str request_id = constant INVALID_REQUEST_ID

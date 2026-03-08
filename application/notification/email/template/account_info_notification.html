@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ venue }} Account Balance Update</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Asset</th>
+            <th>Free</th>
+            <th>Locked</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for balance in balances %}
+        <tr>
+            <td>{{ balance.ticker }}</td>
+            <td>{{ balance.free }}</td>
+            <td>{{ balance.locked }}</td>
+            <td>{{ balance.free + balance.locked }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,288 @@
+constant str INVALID_SIGNAL_ID = "INVALID"
+
+
+constant int INVALID_BOOK_DEPTH = -1
+
+
+constant float DEFAULT_GRADIENT = 0.0
+
+
+constant float DEFAULT_RETURN = 0.0
+
+
+enum str SignalType ->
+    INVALID = INVALID
+    MAX_PRICE = MAX_PRICE
+    MIN_PRICE = MIN_PRICE
+    MID_PRICE = MID_PRICE
+    MEAN_PRICE = MEAN_PRICE
+    WEIGHTED_MEAN_PRICE = WEIGHTED_MEAN_PRICE
+    MEDIAN_PRICE = MEDIAN_PRICE
+    MEAN_SIMPLE_RETURN = MEAN_SIMPLE_RETURN
+    WEIGHTED_MEAN_SIMPLE_RETURN = WEIGHTED_MEAN_SIMPLE_RETURN
+    MEDIAN_SIMPLE_RETURN = MEDIAN_SIMPLE_RETURN
+    MEAN_LOG_RETURN = MEAN_LOG_RETURN
+    WEIGHTED_MEAN_LOG_RETURN = WEIGHTED_MEAN_LOG_RETURN
+    MEDIAN_LOG_RETURN = MEDIAN_LOG_RETURN
+    EXPONENTIAL_MOVING_AVERAGE_PRICE = EXPONENTIAL_MOVING_AVERAGE_PRICE
+    BOOK_VWAP = BOOK_VWAP
+    BID_VWAP = BID_VWAP
+    ASK_VWAP = ASK_VWAP
+
+
+enum str SignalParameterType ->
+    WINDOW_NS = WINDOW_NS
+    DECAY_FACTOR = DECAY_FACTOR
+    BOOK_DEPTH = BOOK_DEPTH
+
+
+enum str SignalParameterProperty ->
+    ABSOLUTE = ABSOLUTE
+    RELATIVE_FRACTION = RELATIVE_FRACTION
+
+
+enum str SignalFilterType ->
+    KALMAN = KALMAN
+
+
+msg SignalFilter
+
+
+msg KalmanFilter : msg.SignalFilter ->
+    float measurement_noise = 0.0
+    enum.SignalParameterProperty measurement_noise_property = SignalParameterProperty.ABSOLUTE
+    float process_noise = 0.0
+    enum.SignalParameterProperty process_noise_property = SignalParameterProperty.ABSOLUTE
+
+
+msg SignalParameter
+
+
+msg WindowNanosSignalParameter : msg.SignalParameter ->
+    int window = 0
+
+
+msg DecayFactorSignalParameter : msg.SignalParameter ->
+    float decay_factor = 0.0
+
+
+msg BookDepthSignalParameter : msg.SignalParameter ->
+    Optional[int] depth = constant INVALID_BOOK_DEPTH
+
+
+msg SubscribeSignal : core:msg.Request ->
+    list[msg.SignalFilter] filters = []
+    list[str] tags
+
+
+msg SignalMetadata : core:msg.Response ->
+    str signal_id = constant INVALID_SIGNAL_ID
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    enum.SignalType signal_type = SignalType.INVALID
+    list[msg.SignalParameter] parameters = []
+    list[msg.SignalFilter] filters = []
+    list[str] tags = []
+
+
+msg SignalValue ->
+    str signal_id = constant INVALID_SIGNAL_ID
+
+
+msg MaxTradePrice : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float price = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMaxTradePrice : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MinTradePrice : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float price = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMinTradePrice : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MidTradePrice : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float price = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMidTradePrice : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MeanTradePrice : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float price = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMeanTradePrice : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg WeightedMeanTradePrice : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float price = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeWeightedMeanTradePrice : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MedianTradePrice : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float price = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMedianTradePrice : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MeanTradeSimpleReturn : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float simple_return = constant DEFAULT_RETURN
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMeanTradeSimpleReturn : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg WeightedMeanTradeSimpleReturn : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float simple_return = constant DEFAULT_RETURN
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeWeightedMeanTradeSimpleReturn : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MedianTradeSimpleReturn : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float simple_return = constant DEFAULT_RETURN
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMedianTradeSimpleReturn : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MeanTradeLogReturn : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float log_return = constant DEFAULT_RETURN
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMeanTradeLogReturn : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg WeightedMeanTradeLogReturn : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float log_return = constant DEFAULT_RETURN
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeWeightedMeanTradeLogReturn : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg MedianTradeLogReturn : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float log_return = constant DEFAULT_RETURN
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeMedianTradeLogReturn : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.WindowNanosSignalParameter window_nanos
+
+
+msg ExponentialMovingAverageTradePrice : msg.SignalValue ->
+    int last_trade_time_nanos = core:constant INVALID_TIMESTAMP
+    float price = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+
+
+msg SubscribeExponentialMovingAverageTradePrice : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.DecayFactorSignalParameter decay_factor
+
+
+msg BookVwap : msg.SignalValue ->
+    Optional[int] ask_depth = constant INVALID_BOOK_DEPTH
+    Optional[int] bid_depth = constant INVALID_BOOK_DEPTH
+    float vwap = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+    float mid_price = core:constant INVALID_PRICE_FLOAT
+    float book_volume = core:constant INVALID_QUANTITY_FLOAT
+
+
+msg SubscribeBookVwap : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.BookDepthSignalParameter book_depth
+
+
+msg BidVwap : msg.SignalValue ->
+    Optional[int] bid_depth = constant INVALID_BOOK_DEPTH
+    float vwap = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+    float best_bid = core:constant INVALID_PRICE_FLOAT
+    float bid_volume = core:constant INVALID_QUANTITY_FLOAT
+
+
+msg SubscribeBidVwap : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.BookDepthSignalParameter bid_depth
+
+
+msg AskVwap : msg.SignalValue ->
+    Optional[int] ask_depth = constant INVALID_BOOK_DEPTH
+    float vwap = core:constant INVALID_PRICE_FLOAT
+    float gradient = constant DEFAULT_GRADIENT
+    float best_ask = core:constant INVALID_PRICE_FLOAT
+    float ask_volume = core:constant INVALID_QUANTITY_FLOAT
+
+
+msg SubscribeAskVwap : msg.SubscribeSignal ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    msg.BookDepthSignalParameter ask_depth 

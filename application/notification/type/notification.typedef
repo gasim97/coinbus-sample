@@ -1,0 +1,11 @@
+msg EmailNotifierConfig ->
+    list[str] recipients = []
+    bool notify_on_account_info = False
+    bool notify_on_order_entered = False
+    bool request_account_info_on_order_entered = False
+    bool notify_on_order_rejected = False
+    bool request_account_info_on_order_rejected = False
+    bool notify_on_order_cancelled = False
+    bool request_account_info_on_order_cancelled = False
+    bool notify_on_order_completed = False
+    bool request_account_info_on_order_completed = False

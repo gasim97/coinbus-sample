@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Order Cancelled</h2>
+<div class="order-details">
+    <p><strong>Internal Order ID:</strong> {{ order.internal_order_id }}</p>
+    <p><strong>Venue:</strong> {{ order.venue }}</p>
+    <p><strong>Symbol:</strong> {{ order.symbol }}</p>
+    <p><strong>Side:</strong> {{ order.side }}</p>
+    <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+    <p><strong>Base Quantity:</strong> {{ order.base_asset_quantity }}</p>
+    <p><strong>Quote Quantity:</strong> {{ order.quote_asset_quantity }}</p>
+    <p><strong>Price:</strong> {{ order.price }}</p>
+    <p><strong>Order Type:</strong> {{ order.order_type }}</p>
+    <p><strong>Time In Force:</strong> {{ order.time_in_force }}</p>
+    <p><strong>Leaves Quantity:</strong> {{ order.leaves_quantity }}</p>
+    <p><strong>Executed Quantity:</strong> {{ order.executed_quantity }}</p>
+    <p><strong>Executed Quote Quantity:</strong> {{ order.executed_quote_quantity }}</p>
+    <p><strong>Executed Price:</strong> {{ order.average_execution_price }}</p>
+</div>
+{% endblock %}

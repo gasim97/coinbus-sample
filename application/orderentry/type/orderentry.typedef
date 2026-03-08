@@ -1,0 +1,84 @@
+constant str INVALID_INTERNAL_ORDER_ID = "INVALID"
+constant int INVALID_EXTERNAL_ORDER_ID = -1
+constant int INVALID_EXTERNAL_TRADE_ID = -1
+
+
+enum str OrderType ->
+    INVALID = INVALID
+    LIMIT = LIMIT
+    MARKET = MARKET
+
+
+enum str TimeInForce ->
+    INVALID = INVALID
+    GTC = GTC
+    IOC = IOC
+
+
+enum str OrderStatus ->
+    INVALID = INVALID
+    CANCELED = CANCELED
+    EXPIRED = EXPIRED
+    EXPIRED_IN_MATCH = EXPIRED_IN_MATCH
+    FILLED = FILLED
+    NEW = NEW
+    PARTIALLY_FILLED = PARTIALLY_FILLED
+    PENDING_CANCEL = PENDING_CANCEL
+    REJECTED = REJECTED
+
+
+msg EnterOrder ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    common:enum.Side side = Side.INVALID
+    WFloat quantity = WFloat(value=0, precision=0)
+    common:enum.Ticker quantity_asset = Ticker.INVALID
+    WFloat price
+    WFloat stop_price
+    WFloat reference_price
+    enum.OrderType order_type = OrderType.INVALID
+    enum.TimeInForce time_in_force = TimeInForce.INVALID
+
+
+msg OrderEntered ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+    int external_order_id = constant INVALID_EXTERNAL_ORDER_ID
+
+
+msg RejectEnterOrder ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+    str reason
+
+
+msg CancelOrder ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+
+
+msg OrderCancelled ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+
+
+msg RejectCancelOrder ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+    str reason
+
+
+msg Fill ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+    int trade_id = constant INVALID_EXTERNAL_TRADE_ID
+    WFloat price = WFloat(value=0, precision=0)
+    WFloat quantity = WFloat(value=0, precision=0)
+    WFloat quote_quantity = WFloat(value=0, precision=0)
+    WFloat commission = WFloat(value=0, precision=0)
+    common:enum.Ticker commission_asset = Ticker.INVALID
+    bool is_maker
+    bool is_best_match
+
+
+msg OrderCompleted ->
+    str internal_order_id = constant INVALID_INTERNAL_ORDER_ID
+    enum.OrderStatus status = OrderStatus.INVALID
+    str executed_quantity
+    str executed_quote_quantity
+    int working_time

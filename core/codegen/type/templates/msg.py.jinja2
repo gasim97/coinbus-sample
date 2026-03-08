@@ -1,0 +1,117 @@
+"""
+Generated code
+"""
+
+from __future__ import annotations
+
+{{ MsgTemplateHelper.render_typing_imports(msg) }}
+
+from core.msg.base.msg import Msg
+from core.msg.base.msggroup import MsgGroup
+from core.msg.base.msgtype import MsgType
+{{ MsgTemplateHelper.render_type_ref_imports(msg) }}
+
+{% for msg_ref in msg.msg_refs %}
+{{ MsgTemplateHelper.render_msg_ref_type_var_name(msg_ref) }} = TypeVar("{{ MsgTemplateHelper.render_msg_ref_type_var_name(msg_ref) }}", bound={{ msg_ref }})
+{% endfor %}
+
+class {{ msg.msg_name }}Msg({{ msg.parent_msg_type }}):
+
+    __slots__ = (
+{%- for field in msg.fields %}
+        '_{{ field.name }}',
+{%- endfor %}
+    )
+
+    def __init__(self):
+        super().__init__()
+        self.clear()
+
+    @override
+    def clear(self) -> Self:
+{%- for field in msg.fields %}
+        self._{{ field.name }}: {{ field.type_hint }} = {{ field.default_value_expr }}
+{%- endfor %}
+        return super().clear()
+{% if msg.has_msg_ref_fields %}
+
+    @override
+    def release(self) -> None:
+{%- for field in msg.fields %}
+{%- if field.has_msg_refs %}
+        super().release_property(value=self._{{ field.name }})
+{%- endif %}
+{%- endfor %}
+        super().release()
+{% endif %}
+    @override
+    @property
+    def group(self) -> MsgGroup:
+        return MsgGroup.{{ msg.group.upper() }}
+
+    @override
+    @property
+    def type(self) -> MsgType:
+        return {{ msg.group_types_class_name }}.{{ msg.msg_name.upper() }}
+
+    @override
+    @property
+    def groups(self) -> list[MsgGroup]:
+        return [MsgGroup.{{ msg.group.upper() }}, *super().groups]
+
+    @override
+    @property
+    def types(self) -> list[MsgType]:
+        return [{{ msg.group_types_class_name }}.{{ msg.msg_name.upper() }}, *super().types]
+{% for field in msg.fields %}
+    @property
+    def {{ field.name }}(self) -> {{ field.type_hint }}:
+        return self._{{ field.name }}
+
+    @{{ field.name }}.setter
+    def {{ field.name }}(self, {{ field.name }}: {{ field.type_hint }}) -> None:
+        self._{{ field.name }} = {{ field.name }}
+{% endfor %}
+    @override
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        _dict = super().as_dict
+        _dict.update(
+{%- for field in msg.fields %}
+            _{{ field.name }}={{ MsgTemplateHelper.render_to_dict_value(field) }},
+{%- endfor %}
+        )
+        return _dict
+
+    @override
+    def from_dict(self, value: dict[str, Any], msg_refs_lookup: Callable[[str, str], Type[Msg]]) -> Self:
+        super().from_dict(value=value, msg_refs_lookup=msg_refs_lookup)
+{%- for field in msg.fields %}
+        self.{{ field.name }} = {{ MsgTemplateHelper.render_from_dict_value(field, "value['_" ~ field.name ~ "']") }}
+{%- endfor %}
+        return self
+
+    @override
+    def copy_from(self, other: Self) -> Self:
+        if not isinstance(other, {{ msg.msg_name }}Msg):
+            raise ValueError(f"Cannot copy {{ msg.msg_name }}Msg from object of type {type(other)}: {other}")
+        super().copy_from(other=other)
+{%- for field in msg.fields %}
+        self.{{ field.name }} = {{ MsgTemplateHelper.render_copy_statement(field, "other." ~ field.name) }}
+{%- endfor %}
+        return self
+{%- for msg_ref in msg.msg_refs %}
+
+    @overload
+    def create_{{ MsgTemplateHelper.render_msg_ref_as_snake_case(msg_ref) }}(self) -> {{ msg_ref }}:
+        ...
+
+    @overload
+    def create_{{ MsgTemplateHelper.render_msg_ref_as_snake_case(msg_ref) }}(self, type: Type[{{ MsgTemplateHelper.render_msg_ref_type_var_name(msg_ref) }}]) -> {{ MsgTemplateHelper.render_msg_ref_type_var_name(msg_ref) }}:
+        ...
+
+    def create_{{ MsgTemplateHelper.render_msg_ref_as_snake_case(msg_ref) }}(self, type: Type[{{ msg_ref }}] = {{ msg_ref }}) -> {{ msg_ref }}:
+        if not issubclass(type, {{ msg_ref }}):
+            raise ValueError(f"Cannot create {{ msg_ref }} of type {type}")
+        return self.create(type=type)
+{%- endfor %}

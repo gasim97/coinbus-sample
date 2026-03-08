@@ -1,0 +1,20 @@
+msg Balance ->
+    common:enum.Ticker ticker = Ticker.INVALID
+    float free = core:constant INVALID_QUANTITY_FLOAT
+    float locked = core:constant INVALID_QUANTITY_FLOAT
+
+
+msg AccountInfo : core:msg.Response ->
+    common:enum.Venue venue = Venue.INVALID
+    bool can_trade = False
+    bool can_withdraw = False
+    bool can_deposit = False
+    list[msg.Balance] balances = []
+
+
+msg AccountInfoRequest : core:msg.Request ->
+    common:enum.Venue venue = Venue.INVALID
+
+
+msg RejectAccountInfoRequest : core:msg.Response ->
+    str reason 

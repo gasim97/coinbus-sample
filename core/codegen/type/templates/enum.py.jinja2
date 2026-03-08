@@ -1,0 +1,15 @@
+"""
+Generated code
+"""
+
+from enum import Enum, unique
+
+
+@unique
+class {{ enum.enum_name }}Enum({{ enum.value_type }}, Enum):
+{% for val in enum.values %}
+    {{ val.key }} = {{ val.value_literal }}
+{%- endfor %}
+
+    def __str__(self) -> str:
+        return self.name

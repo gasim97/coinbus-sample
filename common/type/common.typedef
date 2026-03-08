@@ -1,0 +1,71 @@
+constant int MICROS_TO_NANOS = 1_000
+
+
+constant int MILLIS_TO_NANOS = 1_000_000
+constant int MILLIS_TO_MICROS = 1_000
+
+
+constant int SECONDS_TO_NANOS = 1_000_000_000
+constant int SECONDS_TO_MICROS = 1_000_000
+constant int SECONDS_TO_MILLIS = 1_000
+
+
+constant int MINUTES_TO_NANOS = 60_000_000_000
+constant int MINUTES_TO_MICROS = 60_000_000
+constant int MINUTES_TO_MILLIS = 60_000
+constant int MINUTES_TO_SECONDS = 60
+
+
+constant int HOURS_TO_NANOS = 3_600_000_000_000
+constant int HOURS_TO_MICROS = 3_600_000_000
+constant int HOURS_TO_MILLIS = 3_600_000
+constant int HOURS_TO_SECONDS = 3_600
+constant int HOURS_TO_MINUTES = 60
+
+
+constant int DAYS_TO_NANOS = 86_400_000_000_000
+constant int DAYS_TO_MICROS = 86_400_000_000
+constant int DAYS_TO_MILLIS = 86_400_000
+constant int DAYS_TO_SECONDS = 86_400
+constant int DAYS_TO_MINUTES = 1_440
+constant int DAYS_TO_HOURS = 24
+
+
+enum str PositionEffect ->
+    INVALID = INVALID
+    OPEN = OPEN
+    CLOSE = CLOSE
+
+
+enum str Side ->
+    INVALID = INVALID
+    SELL = SELL
+    BUY = BUY
+
+
+enum str Ticker ->
+    INVALID = INVALID
+    USDT = USDT
+    BTC = BTC
+    ETH = ETH
+    LINK = LINK
+    SOL = SOL
+    XRP = XRP
+    ADA = ADA
+
+
+enum str Symbol ->
+    INVALID = INVALID
+    BTCUSDT = BTCUSDT
+    ETHUSDT = ETHUSDT
+    LINKUSDT = LINKUSDT
+    SOLUSDT = SOLUSDT
+    LINKBTC = LINKBTC
+    ETHBTC = ETHBTC
+    XRPUSDT = XRPUSDT
+    ADAUSDT = ADAUSDT
+
+
+enum str Venue ->
+    INVALID = INVALID
+    BINANCE = BINANCE

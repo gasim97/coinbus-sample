@@ -1,0 +1,22 @@
+Jinja2
+msgpack
+mypy
+numba==0.60.0
+numpy
+pandas
+pandas-stubs
+pip-tools
+python-binance  # not compatible with python3.13
+python-dotenv
+sortedcontainers
+
+# Analysis
+bokeh
+ccxt
+chardet<6.0.0
+cryptography
+dask[complete]
+holoviews
+pycryptodome
+scikit-learn
+scipy

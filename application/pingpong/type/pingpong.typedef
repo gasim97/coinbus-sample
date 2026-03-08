@@ -1,0 +1,10 @@
+msg Ping ->
+    int game_id
+
+
+msg Pong ->
+    int game_id
+
+
+msg PingPongConfiguration ->
+    int game_id

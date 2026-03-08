@@ -1,0 +1,73 @@
+"""
+Generated code
+"""
+
+from dataclasses import dataclass
+from typing import Optional, Type, overload
+
+from core.msg.base.msg import Msg
+from core.msg.base.msggroup import MsgGroup
+from core.msg.base.msgtype import MsgType
+{{ type_imports }}
+
+
+@dataclass
+class _MsgRef:
+    group: MsgGroup
+    type: MsgType
+    ref: Type[Msg]
+
+
+_MSG_REFS: list[_MsgRef] = [
+{{ type_refs }}
+]
+
+_MSG_REFS_ENUM_DICT: dict[tuple[MsgGroup, MsgType], Type[Msg]] = dict(
+    ((x.group, x.type), x.ref) for x in _MSG_REFS
+)
+
+_MSG_REFS_STR_DICT: dict[tuple[str, str], Type[Msg]] = dict(
+    ((x.group.name, x.type.name), x.ref) for x in _MSG_REFS
+)
+
+
+class MsgRefs:
+
+    @overload
+    @classmethod
+    def lookup(cls, group: MsgGroup, type: MsgType) -> Optional[Type[Msg]]:
+        ... 
+    
+    @overload
+    @classmethod
+    def lookup(cls, group: str, type: str) -> Optional[Type[Msg]]:
+        ... 
+
+    @classmethod
+    def lookup(cls, group, type) -> Optional[Type[Msg]]:
+        return cls.lookup_str(
+            group=group.name if isinstance(group, MsgGroup) else group,
+            type=type.name if isinstance(type, MsgType) else type,
+        )
+
+    @staticmethod
+    def lookup_enum(group: MsgGroup, type: MsgType) -> Optional[Type[Msg]]:
+        return _MSG_REFS_ENUM_DICT.get((group, type), None)
+
+    @staticmethod
+    def lookup_str(group: str, type: str) -> Optional[Type[Msg]]:
+        return _MSG_REFS_STR_DICT.get((group, type), None)
+
+    @classmethod
+    def lookup_enum_strict(cls, group: MsgGroup, type: MsgType) -> Type[Msg]:
+        type_ref = cls.lookup_enum(group=group, type=type)
+        if type_ref is None:
+            raise ValueError(f"Msg {group}.{type} not found")
+        return type_ref
+
+    @classmethod
+    def lookup_str_strict(cls, group: str, type: str) -> Type[Msg]:
+        type_ref = cls.lookup_str(group=group, type=type)
+        if type_ref is None:
+            raise ValueError(f"Msg {group}.{type} not found")
+        return type_ref

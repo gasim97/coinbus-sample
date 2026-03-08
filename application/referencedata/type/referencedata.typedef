@@ -1,0 +1,54 @@
+constant int INVALID_PRECISION = -1
+
+
+msg NumericValueBounds ->
+    float min
+    float max
+
+
+msg NumericValueInfo : msg.NumericValueBounds ->
+    float step_size
+    int precision
+
+
+msg SymbolInfo : core:msg.Response ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    common:enum.Ticker base_asset = Ticker.INVALID
+    common:enum.Ticker quote_asset = Ticker.INVALID
+    int base_asset_precision = constant INVALID_PRECISION
+    int quote_asset_precision = constant INVALID_PRECISION
+    int base_asset_commission_precision = constant INVALID_PRECISION
+    int quote_asset_commission_precision = constant INVALID_PRECISION
+    msg.NumericValueInfo price
+    msg.NumericValueInfo quantity
+    msg.NumericValueInfo market_quantity
+    msg.NumericValueBounds notional
+
+
+msg SymbolInfoRequest : core:msg.Request ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+
+
+msg RejectSymbolInfoRequest : core:msg.Response ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    str reason
+
+
+msg SymbolPrice : core:msg.Request ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    WFloat price
+
+
+msg SymbolPriceRequest : core:msg.Request ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+
+
+msg RejectSymbolPriceRequest : core:msg.Response ->
+    common:enum.Venue venue = Venue.INVALID
+    common:enum.Symbol symbol = Symbol.INVALID
+    str reason

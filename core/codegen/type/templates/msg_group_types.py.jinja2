@@ -1,0 +1,14 @@
+"""
+Generated code
+"""
+
+from enum import unique
+
+from core.msg.base.msgtype import MsgType
+
+
+@unique
+class {{ msg_group_types_class_name }}(MsgType):
+{% for msg in msgs %}
+    {{ msg.msg_name.upper() }} = {{ loop.index0 }}
+{%- endfor %}
